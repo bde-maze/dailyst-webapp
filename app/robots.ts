@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://dailyst.app/sitemap.xml',
+    sitemap: 'https://dailyst.ministud.io/sitemap.xml',
   }
 }

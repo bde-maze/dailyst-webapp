@@ -13,7 +13,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://dailyst.app'),
+  metadataBase: new URL('https://dailyst.ministud.io'),
   title: {
     default: 'Dailyst - 3 Most Important Things Today',
     template: '%s | Dailyst',
@@ -41,14 +41,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://dailyst.app',
+    url: 'https://dailyst.ministud.io',
     siteName: 'Dailyst',
     title: 'Dailyst - 3 Most Important Things Today',
     description:
       'A minimalistic app to track your 3 most important tasks each day. Focus on what matters most.',
     images: [
       {
-        url: '/og-image.png',
+        url: '/opengraph-image',
         width: 1200,
         height: 630,
         alt: 'Dailyst - Track your 3 most important tasks',
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     title: 'Dailyst - 3 Most Important Things Today',
     description:
       'A minimalistic app to track your 3 most important tasks each day.',
-    images: ['/og-image.png'],
+    images: ['/opengraph-image'],
     creator: '@dailyst',
   },
   robots: {
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     // yandex: 'your-yandex-verification-code',
   },
   alternates: {
-    canonical: 'https://dailyst.app',
+    canonical: 'https://dailyst.ministud.io',
   },
   manifest: '/manifest.json',
   appleWebApp: {
@@ -118,7 +118,7 @@ export default function RootLayout({
                 name: 'Dailyst',
                 description:
                   'A minimalistic app to track your 3 most important tasks each day',
-                url: 'https://dailyst.app',
+                url: 'https://dailyst.ministud.io',
                 applicationCategory: 'ProductivityApplication',
                 operatingSystem: 'Web',
                 offers: {

@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dailyst.app/sitemap.xml
+Sitemap: https://dailyst.ministud.io/sitemap.xml
 
