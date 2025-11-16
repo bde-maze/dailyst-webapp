@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 import './globals.css'
+import { Analytics } from '@vercel/analytics/next'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: '--font-sans',
@@ -107,6 +108,7 @@ export default function RootLayout({
           disableTransitionOnChange={false}
         >
           {children}
+          <Analytics />
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
