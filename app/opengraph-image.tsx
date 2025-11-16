@@ -15,14 +15,14 @@ export default async function Image() {
       <div
         style={{
           fontSize: 60,
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background: '#fcfcfc', // Light background matching the theme
           width: '100%',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          color: 'white',
+          color: '#333333', // Dark foreground text
           fontFamily: 'system-ui, -apple-system, sans-serif',
           padding: '80px',
         }}
@@ -32,38 +32,91 @@ export default async function Image() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '30px',
+            gap: '40px',
+            maxWidth: '1000px',
           }}
         >
+          {/* Logo/Title Section */}
           <div
             style={{
-              fontSize: 100,
-              fontWeight: 'bold',
-              marginBottom: '20px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '20px',
             }}
           >
-            Dailyst
+            <div
+              style={{
+                fontSize: 96,
+                fontWeight: 'bold',
+                color: '#8B6F47', // Primary color (warm brown/orange from oklch(0.55 0.15 45))
+                letterSpacing: '-0.02em',
+              }}
+            >
+              Dailyst
+            </div>
+            <div
+              style={{
+                width: '120px',
+                height: '4px',
+                background: '#8B6F47',
+                borderRadius: '2px',
+              }}
+            />
           </div>
+
+          {/* Main Content */}
           <div
             style={{
-              fontSize: 48,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '24px',
               textAlign: 'center',
-              opacity: 0.9,
-              maxWidth: '900px',
             }}
           >
-            3 Most Important Things Today
+            <div
+              style={{
+                fontSize: 56,
+                fontWeight: '600',
+                color: '#1a1a1a',
+                lineHeight: '1.2',
+              }}
+            >
+              3 Most Important Things Today
+            </div>
+            <div
+              style={{
+                fontSize: 32,
+                color: '#666666',
+                lineHeight: '1.4',
+                maxWidth: '900px',
+              }}
+            >
+              A minimalistic app to track your 3 most important tasks each day
+            </div>
           </div>
+
+          {/* Decorative Elements - Three dots representing the 3 tasks */}
           <div
             style={{
-              fontSize: 32,
-              textAlign: 'center',
-              opacity: 0.8,
+              display: 'flex',
+              gap: '16px',
               marginTop: '20px',
-              maxWidth: '800px',
             }}
           >
-            A minimalistic app to track your 3 most important tasks each day
+            {[1, 2, 3].map((_, i) => (
+              <div
+                key={i}
+                style={{
+                  width: '12px',
+                  height: '12px',
+                  borderRadius: '50%',
+                  background: '#8B6F47',
+                  opacity: 0.6,
+                }}
+              />
+            ))}
           </div>
         </div>
       </div>
