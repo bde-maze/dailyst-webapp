@@ -18,7 +18,7 @@ const HistoryModal = lazy(() =>
 )
 
 export default function Home() {
-  const { history, addToHistory } = useHistory()
+  const { pastHistory, addToHistory } = useHistory()
 
   const {
     tasks,
@@ -56,7 +56,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-2">
             <Suspense fallback={null}>
-              <HistoryModal history={history} />
+              <HistoryModal history={pastHistory} />
             </Suspense>
             <ThemeToggle />
           </div>

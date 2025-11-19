@@ -23,11 +23,6 @@ interface HistoryModalProps {
 
 export function HistoryModal({ history }: HistoryModalProps) {
   const [open, setOpen] = useState(false)
-  const [expandedDate, setExpandedDate] = useState<string | null>(null)
-
-  const toggleExpand = (date: string) => {
-    setExpandedDate(expandedDate === date ? null : date)
-  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -48,22 +43,15 @@ export function HistoryModal({ history }: HistoryModalProps) {
             View your past days and completion status
           </DialogDescription>
         </DialogHeader>
-        <div className="flex-1 overflow-y-auto pr-2 space-y-3">
+        <div className="flex-1 overflow-y-auto pr-2 space-y-3 pb-2 px-1">
           {history.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <p>No history yet.</p>
-              <p className="text-sm mt-2">Complete days will appear here.</p>
+              <p className="text-sm mt-2">Past days will appear here.</p>
             </div>
           ) : (
             history.map((entry) => (
-              <Card
-                key={entry.date}
-                className={cn(
-                  'cursor-pointer transition-all hover:shadow-md',
-                  expandedDate === entry.date && 'ring-2 ring-ring'
-                )}
-                onClick={() => toggleExpand(entry.date)}
-              >
+              <Card key={entry.date} className="transition-all hover:shadow-md">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-base font-medium">
@@ -84,37 +72,34 @@ export function HistoryModal({ history }: HistoryModalProps) {
                     {formatDate(entry.date)}
                   </div>
                 </CardHeader>
-                {expandedDate === entry.date && (
-                  <CardContent className="pt-0 space-y-2">
-                    {entry.tasks.map((task, index) => (
-                      <div
-                        key={task.id}
+                <CardContent className="pt-0 space-y-1.5">
+                  {entry.tasks.map((task, index) => (
+                    <div
+                      key={task.id}
+                      className={cn(
+                        'flex items-start gap-2 text-xs',
+                        task.completed && 'opacity-60'
+                      )}
+                    >
+                      <span className="text-muted-foreground min-w-[16px]">
+                        {index + 1}.
+                      </span>
+                      <span
                         className={cn(
-                          'flex items-start gap-2 p-2 rounded text-sm',
-                          task.completed && 'opacity-60'
+                          'flex-1',
+                          task.completed && 'line-through text-muted-foreground'
                         )}
                       >
-                        <span className="text-muted-foreground min-w-[20px]">
-                          {index + 1}.
+                        {task.text}
+                      </span>
+                      {task.completed && (
+                        <span className="text-green-600 dark:text-green-400 text-xs">
+                          ✓
                         </span>
-                        <span
-                          className={cn(
-                            'flex-1',
-                            task.completed &&
-                              'line-through text-muted-foreground'
-                          )}
-                        >
-                          {task.text}
-                        </span>
-                        {task.completed && (
-                          <span className="text-green-600 dark:text-green-400 text-xs">
-                            ✓
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </CardContent>
-                )}
+                      )}
+                    </div>
+                  ))}
+                </CardContent>
               </Card>
             ))
           )}
