@@ -1,31 +1,81 @@
-'use client';
+'use client'
 
-import { useState, useEffect, useRef } from 'react';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import type { DayTask } from '@/lib/types';
-import { cn } from '@/lib/utils';
+import { useState, useEffect, useRef } from 'react'
+import { Input } from '@/components/ui/input'
+import { Checkbox } from '@/components/ui/checkbox'
+import type { DayTask, Timeframe } from '@/lib/types'
+import { cn } from '@/lib/utils'
 
 interface TaskFormProps {
-  onSubmit: (tasks: DayTask[]) => void;
+  onSubmit: (tasks: DayTask[]) => void
+  timeframe?: Timeframe
 }
 
-export function TaskForm({ onSubmit }: TaskFormProps) {
-  const [task1, setTask1] = useState('');
-  const [task2, setTask2] = useState('');
-  const [task3, setTask3] = useState('');
-  const [completed1, setCompleted1] = useState(false);
-  const [completed2, setCompleted2] = useState(false);
-  const [completed3, setCompleted3] = useState(false);
-  
+function getTimeframeText(timeframe: Timeframe = 'day'): {
+  title: string
+  description: string
+  resetText: string
+} {
+  switch (timeframe) {
+    case 'day':
+      return {
+        title: 'What are your 3 most important things today?',
+        description: 'Focus on what matters most. These will reset tomorrow.',
+        resetText: 'tomorrow',
+      }
+    case 'week':
+      return {
+        title: 'What are your 3 most important things this week?',
+        description:
+          'Focus on what matters most. These will reset next Monday.',
+        resetText: 'next Monday',
+      }
+    case 'month':
+      return {
+        title: 'What are your 3 most important things this month?',
+        description: 'Focus on what matters most. These will reset on the 1st.',
+        resetText: 'on the 1st',
+      }
+    case 'year':
+      return {
+        title: 'What are your 3 most important things this year?',
+        description:
+          'Focus on what matters most. These will reset on January 1st.',
+        resetText: 'on January 1st',
+      }
+    default:
+      return {
+        title: 'What are your 3 most important things today?',
+        description: 'Focus on what matters most. These will reset tomorrow.',
+        resetText: 'tomorrow',
+      }
+  }
+}
+
+export function TaskForm({ onSubmit, timeframe = 'day' }: TaskFormProps) {
+  const [task1, setTask1] = useState('')
+  const [task2, setTask2] = useState('')
+  const [task3, setTask3] = useState('')
+  const [completed1, setCompleted1] = useState(false)
+  const [completed2, setCompleted2] = useState(false)
+  const [completed3, setCompleted3] = useState(false)
+
+  const timeframeText = getTimeframeText(timeframe)
+
   // Use refs to maintain stable IDs
   const taskIdsRef = useRef({
     task1: `task-${Date.now()}-1`,
     task2: `task-${Date.now()}-2`,
     task3: `task-${Date.now()}-3`,
-  });
-  
-  const createdAtRef = useRef(new Date().toISOString());
+  })
+
+  const createdAtRef = useRef(new Date().toISOString())
+
+  // Store the latest onSubmit callback in a ref to avoid dependency issues
+  const onSubmitRef = useRef(onSubmit)
+  useEffect(() => {
+    onSubmitRef.current = onSubmit
+  }, [onSubmit])
 
   // Auto-save when tasks change
   useEffect(() => {
@@ -48,22 +98,22 @@ export function TaskForm({ onSubmit }: TaskFormProps) {
         completed: completed3,
         createdAt: createdAtRef.current,
       },
-    ];
+    ]
 
     // Only submit if at least one task has text
     if (task1.trim() || task2.trim() || task3.trim()) {
-      onSubmit(tasks);
+      onSubmitRef.current(tasks)
     }
-  }, [task1, task2, task3, completed1, completed2, completed3, onSubmit]);
+  }, [task1, task2, task3, completed1, completed2, completed3])
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-10 animate-in fade-in-0 duration-300">
       <div className="text-center space-y-4">
         <h2 className="text-4xl font-semibold text-foreground tracking-tight">
-          What are your 3 most important things today?
+          {timeframeText.title}
         </h2>
         <p className="text-lg text-muted-foreground">
-          Focus on what matters most. These will reset tomorrow.
+          {timeframeText.description}
         </p>
       </div>
 
@@ -148,5 +198,5 @@ export function TaskForm({ onSubmit }: TaskFormProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }

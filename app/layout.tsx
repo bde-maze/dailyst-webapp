@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 import './globals.css'
 import { Analytics } from '@vercel/analytics/next'
+import { Navbar } from '@/components/Navbar'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: '--font-sans',
@@ -107,6 +108,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange={false}
         >
+          <Navbar />
           {children}
           <Analytics />
           <script

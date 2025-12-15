@@ -2,23 +2,44 @@
 
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
-import type { DayTask } from '@/lib/types'
+import type { DayTask, Timeframe } from '@/lib/types'
 import { cn } from '@/lib/utils'
 
 interface TaskListProps {
   tasks: DayTask[]
   onToggle: (taskId: string) => void
   onUpdate?: (taskId: string, text: string) => void
+  timeframe?: Timeframe
 }
 
-export function TaskList({ tasks, onToggle, onUpdate }: TaskListProps) {
+function getFocusTitle(timeframe: Timeframe = 'day'): string {
+  switch (timeframe) {
+    case 'day':
+      return "Today's Focus"
+    case 'week':
+      return "This Week's Focus"
+    case 'month':
+      return "This Month's Focus"
+    case 'year':
+      return "This Year's Focus"
+    default:
+      return "Today's Focus"
+  }
+}
+
+export function TaskList({
+  tasks,
+  onToggle,
+  onUpdate,
+  timeframe = 'day',
+}: TaskListProps) {
   const completedCount = tasks.filter((task) => task.completed).length
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-10 animate-in fade-in-0 duration-300">
       <div className="text-center space-y-3">
         <h2 className="text-4xl font-semibold text-foreground tracking-tight">
-          Today&apos;s Focus
+          {getFocusTitle(timeframe)}
         </h2>
         <p className="text-lg text-muted-foreground">
           {completedCount} of {tasks.length} completed

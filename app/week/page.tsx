@@ -5,15 +5,15 @@ import { TaskForm } from '@/components/TaskForm'
 import { TaskList } from '@/components/TaskList'
 import { CompletedDay } from '@/components/CompletedDay'
 import { Footer } from '@/components/Footer'
-import { useDailyTasks } from '@/hooks/useDailyTasks'
+import { useWeeklyTasks } from '@/hooks/useWeeklyTasks'
 import { useHistory } from '@/hooks/useHistory'
 
-export default function Home() {
+export default function WeekPage() {
   const { addToHistory } = useHistory()
 
   const handleArchive = useCallback(
     (day: Parameters<typeof addToHistory>[0]) => {
-      addToHistory(day, 'day')
+      addToHistory(day, 'week')
     },
     [addToHistory]
   )
@@ -25,7 +25,7 @@ export default function Home() {
     updateTaskText,
     isCompleted,
     isInitialized,
-  } = useDailyTasks(handleArchive)
+  } = useWeeklyTasks(handleArchive)
 
   // Show loading state while initializing
   if (!isInitialized) {
@@ -42,7 +42,7 @@ export default function Home() {
       <main className="container mx-auto px-4 pt-8 md:pt-12 flex-1">
         <div className="flex flex-col items-center">
           {!tasks ? (
-            <TaskForm onSubmit={setTasks} timeframe="day" />
+            <TaskForm onSubmit={setTasks} timeframe="week" />
           ) : isCompleted ? (
             <CompletedDay tasks={tasks} onToggle={toggleTask} />
           ) : (
@@ -50,7 +50,7 @@ export default function Home() {
               tasks={tasks}
               onToggle={toggleTask}
               onUpdate={updateTaskText}
-              timeframe="day"
+              timeframe="week"
             />
           )}
         </div>
