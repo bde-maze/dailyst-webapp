@@ -6,7 +6,6 @@ import { STORAGE_KEYS, MAX_HISTORY_DAYS } from '@/lib/constants'
 import {
   compareDates,
   isToday,
-  getTodayDate,
   getCurrentWeek,
   getCurrentMonth,
   getCurrentYear,
@@ -26,7 +25,7 @@ export function useHistory() {
     const migratedHistory = storedHistory.map((entry) => {
       if (!('timeframe' in entry)) {
         return {
-          ...entry,
+          ...(entry as HistoryEntry),
           timeframe: 'day' as Timeframe,
         }
       }
