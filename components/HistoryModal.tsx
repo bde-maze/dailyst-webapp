@@ -25,6 +25,8 @@ import { cn } from '@/lib/utils'
 
 interface HistoryModalProps {
   history: HistoryEntry[]
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
 }
 
 function getTimeframeBadgeClass(timeframe: Timeframe): string {
@@ -87,11 +89,18 @@ function getEntryTitle(entry: HistoryEntry): string {
   }
 }
 
-export function HistoryModal({ history }: HistoryModalProps) {
-  const [open, setOpen] = useState(false)
+export function HistoryModal({
+  history,
+  open,
+  onOpenChange,
+}: HistoryModalProps) {
+  const [internalOpen, setInternalOpen] = useState(false)
+  const isControlled = open !== undefined
+  const dialogOpen = isControlled ? open : internalOpen
+  const handleOpenChange = onOpenChange ?? setInternalOpen
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={dialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button
           variant="ghost"

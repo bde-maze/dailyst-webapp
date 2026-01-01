@@ -1,9 +1,9 @@
 'use client'
 
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { useHistory } from '@/hooks/useHistory'
 import { cn } from '@/lib/utils'
@@ -17,7 +17,9 @@ const HistoryModal = lazy(() =>
 
 export function Navbar() {
   const pathname = usePathname()
+  const router = useRouter()
   const { pastHistory } = useHistory()
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false)
 
   const navLinks = [
     { href: '/', label: 'Day' },
@@ -25,6 +27,52 @@ export function Navbar() {
     { href: '/month', label: 'Month' },
     { href: '/year', label: 'Year' },
   ]
+
+  const handleNavigation = useCallback(
+    (targetPath: string) => {
+      if (pathname === targetPath) return
+      router.push(targetPath)
+    },
+    [pathname, router]
+  )
+
+  useEffect(() => {
+    const keyToPath: Record<string, string> = {
+      d: '/',
+      w: '/week',
+      m: '/month',
+      y: '/year',
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null
+      const isTyping =
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable)
+
+      if (event.metaKey || event.ctrlKey || event.altKey || isTyping) {
+        return
+      }
+
+      const key = event.key.toLowerCase()
+
+      if (key in keyToPath) {
+        handleNavigation(keyToPath[key])
+        return
+      }
+
+      if (key === 'h') {
+        setIsHistoryOpen((prev) => !prev)
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [handleNavigation])
 
   return (
     <header className="sticky top-0 z-10 bg-background">
@@ -60,7 +108,11 @@ export function Navbar() {
             })}
           </div>
           <Suspense fallback={null}>
-            <HistoryModal history={pastHistory} />
+            <HistoryModal
+              history={pastHistory}
+              open={isHistoryOpen}
+              onOpenChange={setIsHistoryOpen}
+            />
           </Suspense>
           <ThemeToggle />
         </div>
